@@ -1,0 +1,42 @@
+{% load django_bootstrap5 %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Conversantes</title>
+    {% bootstrap_css %}
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Cadastro de conversantes</h1>
+
+        {% if messages %}
+        {% for message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}
+        {% endif %}
+
+        <form action="{% url 'cadContato' %}" method="post" autocomplete="off" class="form">
+            {% csrf_token %}
+
+            {% bootstrap_form form %}
+
+            <p></p>
+
+            <button type="submit" id="btnSalvar" class="btn btn-primary">Salvar</button>
+        </form>
+
+        <br>
+        <a href="{% url 'index' %}">Voltar</a>
+    </div>
+
+    {% bootstrap_javascript %}
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+{% load static %}
+{%load django_bootstrap5%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda Django</title>
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+    <script type="text/javascript" src="{% static 'js/scripts.js' %}"></script>
+    {% bootstrap_css %}
+</head>
+
+<body>
+
+    <h1>Agenda Django</h1>
+
+    <button onclick="CliqueAqui();">Clique Aqui</button>
+
+
+    <p></p>
+    Agenda de Contatos
+    <table border="1">
+        <tr>
+            <td>Conversante</td>
+            <td>Email</td>
+            <td>Ações</td>
+        </tr>
+        {% for pessoa in lista %}
+        <tr>
+            <td><a href="{% url 'consContato' pessoa.id %}">{{ pessoa.Nome }}</a></td>
+            <td>{{ pessoa.Email }}</td>
+            <td>
+                <a href="{% url 'altContato' pessoa.id %}" class="btn btn-warning">Alterar</a>
+                <a href="{% url 'delContato' pessoa.id %}" class="btn btn-danger">Excluir</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+
+</html>
