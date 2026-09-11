@@ -42,25 +42,31 @@ def altContato(request, pk):
     contato = Contato.objects.get(id=pk)
 
     if request.method == 'POST':
-        form = ContatoModelForm(request.POST, instance=contato)
-
+        form = ContatoModelForm(request.POST, request.FILES, instance=contato)
         if form.is_valid():
             form.save()
             messages.success(request, 'Contato alterado com sucesso!')
             return redirect('index')
         else:
-            messages.error(request, "Erro ao alterar contato")
+            messages.error(request, 'Erro ao alterar contato')
     else:
         form = ContatoModelForm(instance=contato)
 
     context = {
-        'form': form
+        'form': form,
+        'contato': contato,
     }
+    return render(request, 'altContato.html', context)
 
-    return render(request, 'cadContato.html', context)
-
-def delContato(request, pk):
+def excContato(request, pk):
     contato = Contato.objects.get(id=pk)
-    contato.delete()
-    messages.success(request, 'Contato excluído com sucesso!')
-    return redirect('index')
+
+    if request.method == 'POST':
+        contato.delete()
+        messages.success(request, 'Contato excluído com sucesso!')
+        return redirect('index')
+
+    context = {
+        'contato': contato,
+    }
+    return render(request, 'excContato.html', context)

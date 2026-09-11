@@ -33,11 +33,13 @@
             <td>{{ pessoa.Email }}</td>
             <td>
                 <a href="{% url 'altContato' pessoa.id %}" class="btn btn-warning">Alterar</a>
-                <a href="{% url 'delContato' pessoa.id %}" class="btn btn-danger">Excluir</a>
+                <a href="{% url 'excContato' pessoa.id %}" class="btn btn-danger">Excluir</a>
             </td>
         </tr>
         {% endfor %}
     </table>
+
+    
 </body>
 
 </html>
