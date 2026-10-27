@@ -1,3 +1,4 @@
+{% load static %}
 {% load django_bootstrap5 %}
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -6,8 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consulta de Compromisso</title>
     {% bootstrap_css %}
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
 </head>
-<body class="p-4">
+<body>
     <div class="container" style="max-width: 700px;">
         <h1 class="h3 border-bottom pb-2 mb-3">Consulta de Compromisso</h1>
         <div class="card p-3 mb-4">
@@ -19,6 +21,21 @@
             <p><strong>Local:</strong> {{ compromisso.Local|default:"Não informado" }}</p>
             <p><strong>Descrição:</strong> {{ compromisso.Descricao|default:"Sem pauta/descrição informada" }}</p>
         </div>
+
+        <h4 class="h5 mb-2">Participantes deste Compromisso (Relação N:N)</h4>
+        <ul class="list-group mb-4">
+            {% for pessoa in participantes %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>{{ pessoa.Nome }}</strong>
+                    <div class="small text-muted">{{ pessoa.Email }} - {{ pessoa.Empresa.Nome }}</div>
+                </div>
+                <a href="{% url 'consContato' pessoa.id %}" class="btn btn-sm btn-outline-info">Ver</a>
+            </li>
+            {% empty %}
+            <li class="list-group-item text-muted">Nenhum participante vinculado a este compromisso.</li>
+            {% endfor %}
+        </ul>
 
         <div>
             <a href="{% url 'altCompromisso' compromisso.id %}" class="btn btn-warning">Alterar</a>

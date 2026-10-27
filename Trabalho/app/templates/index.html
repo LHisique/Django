@@ -9,196 +9,148 @@
     <title>Trabalho do Isique</title>
     <script type="text/javascript" src="{% static 'js/scripts.js' %}"></script>
     {% bootstrap_css %}
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
 </head>
 
 <body>
+    <div class="container">
 
-    <h1>Trabalho do Isique</h1>
+        <h1 class="mb-1">Trabalho do Isique</h1>
+        <p class="text-muted mb-3">Gerenciamento de contatos, empresas e agendamento de compromissos corporativos</p>
 
-    <button onclick="CliqueAqui();">Clique Aqui</button>
-    <a href="{% url 'relacionamentos' %}">Relações 1:N e N:1</a>
-    <a href="/admin/" target="_blank">Admin</a>
-
-    <p></p>
-
-    {% if messages %}
-    {% for message in messages %}
-    <p>{{ message }}</p>
-    {% endfor %}
-    {% endif %}
-
-    <!-- 5 ABAS: uma por tabela do banco -->
-    <ul class="nav nav-tabs" id="abas" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#aba-contatos" type="button" role="tab">Contatos</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#aba-categorias" type="button" role="tab">Categorias</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#aba-empresas" type="button" role="tab">Empresas</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#aba-cidades" type="button" role="tab">Cidades</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#aba-compromissos" type="button" role="tab">Compromissos</button>
-        </li>
-    </ul>
-
-    <div class="tab-content">
-
-        <!-- ABA 1: CONTATOS (N:1 com Categoria e Empresa, 1:N com Compromissos) -->
-        <div class="tab-pane active" id="aba-contatos" role="tabpanel">
-            <p></p>
-            Agenda de Contatos
-            <a href="{% url 'cadContato' %}" class="btn btn-primary">Cadastrar Contato</a>
-            <p></p>
-            <table border="1">
-                <tr>
-                    <td>Conversante</td>
-                    <td>Email</td>
-                    <td>Categoria (N:1)</td>
-                    <td>Empresa (N:1)</td>
-                    <td>Ações</td>
-                </tr>
-                {% for pessoa in lista_contatos %}
-                <tr>
-                    <td><a href="{% url 'consContato' pessoa.id %}">{{ pessoa.Nome }}</a></td>
-                    <td>{{ pessoa.Email }}</td>
-                    <td>{{ pessoa.Categoria.Nome }}</td>
-                    <td>{{ pessoa.Empresa.Nome }}</td>
-                    <td>
-                        <a href="{% url 'altContato' pessoa.id %}" class="btn btn-warning">Alterar</a>
-                        <a href="{% url 'excContato' pessoa.id %}" class="btn btn-danger">Excluir</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
+        <div class="mb-3">
+            <button onclick="CliqueAqui();" class="btn btn-sm btn-outline-secondary">Clique Aqui</button>
+            <a href="{% url 'relacionamentos' %}" class="btn btn-sm btn-outline-secondary">Relações 1:N e N:N</a>
+            <a href="/admin/" target="_blank" class="btn btn-sm btn-outline-secondary">Admin</a>
         </div>
 
-        <!-- ABA 2: CATEGORIAS (1:N com Contato) -->
-        <div class="tab-pane" id="aba-categorias" role="tabpanel">
-            <p></p>
-            Agenda de Categorias
-            <a href="{% url 'cadCategoria' %}" class="btn btn-primary">Cadastrar Categoria</a>
-            <p></p>
-            <table border="1">
-                <tr>
-                    <td>Categoria</td>
-                    <td>Descrição</td>
-                    <td>Contatos (1:N)</td>
-                    <td>Ações</td>
-                </tr>
-                {% for cat in lista_categorias %}
-                <tr>
-                    <td><a href="{% url 'consCategoria' cat.id %}">{{ cat.Nome }}</a></td>
-                    <td>{{ cat.Descricao|default:"" }}</td>
-                    <td>{{ cat.contatos.count }}</td>
-                    <td>
-                        <a href="{% url 'altCategoria' cat.id %}" class="btn btn-warning">Alterar</a>
-                        <a href="{% url 'excCategoria' cat.id %}" class="btn btn-danger">Excluir</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
 
-        <!-- ABA 3: EMPRESAS (N:1 com Cidade, 1:N com Contato) -->
-        <div class="tab-pane" id="aba-empresas" role="tabpanel">
-            <p></p>
-            Agenda de Empresas
-            <a href="{% url 'cadEmpresa' %}" class="btn btn-primary">Cadastrar Empresa</a>
-            <p></p>
-            <table border="1">
-                <tr>
-                    <td>Empresa</td>
-                    <td>CNPJ</td>
-                    <td>Cidade (N:1)</td>
-                    <td>Contatos (1:N)</td>
-                    <td>Ações</td>
-                </tr>
-                {% for emp in lista_empresas %}
-                <tr>
-                    <td><a href="{% url 'consEmpresa' emp.id %}">{{ emp.Nome }}</a></td>
-                    <td>{{ emp.CNPJ|default:"" }}</td>
-                    <td>{{ emp.Cidade }}</td>
-                    <td>{{ emp.contatos.count }}</td>
-                    <td>
-                        <a href="{% url 'altEmpresa' emp.id %}" class="btn btn-warning">Alterar</a>
-                        <a href="{% url 'excEmpresa' emp.id %}" class="btn btn-danger">Excluir</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-info">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
 
-        <!-- ABA 4: CIDADES (1:N com Empresa) -->
-        <div class="tab-pane" id="aba-cidades" role="tabpanel">
-            <p></p>
-            Agenda de Cidades
-            <a href="{% url 'cadCidade' %}" class="btn btn-primary">Cadastrar Cidade</a>
-            <p></p>
-            <table border="1">
-                <tr>
-                    <td>Cidade</td>
-                    <td>UF</td>
-                    <td>Empresas (1:N)</td>
-                    <td>Ações</td>
-                </tr>
-                {% for cid in lista_cidades %}
-                <tr>
-                    <td><a href="{% url 'consCidade' cid.id %}">{{ cid.Nome }}</a></td>
-                    <td>{{ cid.Estado }}</td>
-                    <td>{{ cid.empresas.count }}</td>
-                    <td>
-                        <a href="{% url 'altCidade' cid.id %}" class="btn btn-warning">Alterar</a>
-                        <a href="{% url 'excCidade' cid.id %}" class="btn btn-danger">Excluir</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
+        <!-- Abas -->
+        <ul class="nav nav-tabs" id="abas" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#aba-contatos" type="button" role="tab">Contatos</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#aba-empresas" type="button" role="tab">Empresas</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#aba-compromissos" type="button" role="tab">Compromissos</button>
+            </li>
+        </ul>
 
-        <!-- ABA 5: COMPROMISSOS (N:1 com Contato) -->
-        <div class="tab-pane" id="aba-compromissos" role="tabpanel">
-            <p></p>
-            Agenda de Compromissos
-            <a href="{% url 'cadCompromisso' %}" class="btn btn-primary">Cadastrar Compromisso</a>
-            <p></p>
-            <table border="1">
-                <tr>
-                    <td>Compromisso</td>
-                    <td>Contato (N:1)</td>
-                    <td>Data</td>
-                    <td>Hora</td>
-                    <td>Ações</td>
-                </tr>
-                {% for comp in lista_compromissos %}
-                <tr>
-                    <td><a href="{% url 'consCompromisso' comp.id %}">{{ comp.Titulo }}</a></td>
-                    <td>{{ comp.Contato.Nome }}</td>
-                    <td>{{ comp.Data|date:"d/m/Y" }}</td>
-                    <td>{{ comp.Hora|time:"H:i" }}</td>
-                    <td>
-                        <a href="{% url 'altCompromisso' comp.id %}" class="btn btn-warning">Alterar</a>
-                        <a href="{% url 'excCompromisso' comp.id %}" class="btn btn-danger">Excluir</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
+        <div class="tab-content">
 
+            <div class="tab-pane active" id="aba-contatos" role="tabpanel">
+                <p class="mb-2">
+                    Agenda de Contatos
+                    <a href="{% url 'cadContato' %}" class="btn btn-sm btn-primary ms-2">Cadastrar Contato</a>
+                </p>
+                <table>
+                    <thead>
+                        <tr>
+                            <td>Pessoas</td>
+                            <td>Email</td>
+                            <td>Empresa</td>
+                            <td>Ações</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pessoa in lista_contatos %}
+                        <tr>
+                            <td><a href="{% url 'consContato' pessoa.id %}">{{ pessoa.Nome }}</a></td>
+                            <td>{{ pessoa.Email }}</td>
+                            <td>{{ pessoa.Empresa.Nome }}</td>
+                            <td>
+                                <a href="{% url 'altContato' pessoa.id %}" class="btn btn-warning">Alterar</a>
+                                <a href="{% url 'excContato' pessoa.id %}" class="btn btn-danger">Excluir</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tab-pane" id="aba-empresas" role="tabpanel">
+                <p class="mb-2">
+                    Agenda de Empresas
+                    <a href="{% url 'cadEmpresa' %}" class="btn btn-sm btn-primary ms-2">Cadastrar Empresa</a>
+                </p>
+                <table>
+                    <thead>
+                        <tr>
+                            <td>Empresa</td>
+                            <td>CNPJ</td>
+                            <td>Contatos</td>
+                            <td>Ações</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for emp in lista_empresas %}
+                        <tr>
+                            <td><a href="{% url 'consEmpresa' emp.id %}">{{ emp.Nome }}</a></td>
+                            <td>{{ emp.CNPJ|default:"" }}</td>
+                            <td>{{ emp.contatos.count }}</td>
+                            <td>
+                                <a href="{% url 'altEmpresa' emp.id %}" class="btn btn-warning">Alterar</a>
+                                <a href="{% url 'excEmpresa' emp.id %}" class="btn btn-danger">Excluir</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tab-pane" id="aba-compromissos" role="tabpanel">
+                <p class="mb-2">
+                    Agenda de Compromissos
+                    <a href="{% url 'cadCompromisso' %}" class="btn btn-sm btn-primary ms-2">Cadastrar Compromisso</a>
+                </p>
+                <table>
+                    <thead>
+                        <tr>
+                            <td>Compromisso</td>
+                            <td>Responsável</td>
+                            <td>Participantes</td>
+                            <td>Data</td>
+                            <td>Hora</td>
+                            <td>Ações</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for comp in lista_compromissos %}
+                        <tr>
+                            <td><a href="{% url 'consCompromisso' comp.id %}">{{ comp.Titulo }}</a></td>
+                            <td>{{ comp.Contato.Nome }}</td>
+                            <td>{% for pessoa in comp.Participantes.all %}{{ pessoa.Nome }}{% if not forloop.last %}, {% endif %}{% empty %}-{% endfor %}</td>
+                            <td>{{ comp.Data|date:"d/m/Y" }}</td>
+                            <td>{{ comp.Hora|time:"H:i" }}</td>
+                            <td>
+                                <a href="{% url 'altCompromisso' comp.id %}" class="btn btn-warning">Alterar</a>
+                                <a href="{% url 'excCompromisso' comp.id %}" class="btn btn-danger">Excluir</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
     </div>
 
     {% bootstrap_javascript %}
     <script>
-        // Lembra a última aba aberta (ao voltar de cadastrar/alterar/excluir)
         const botoes = document.querySelectorAll('#abas [data-bs-toggle="tab"]');
         botoes.forEach(b => b.addEventListener('shown.bs.tab', e => localStorage.setItem('abaAtiva', e.target.dataset.bsTarget)));
         const salva = document.querySelector(`#abas [data-bs-target="${localStorage.getItem('abaAtiva')}"]`);
         if (salva) bootstrap.Tab.getOrCreateInstance(salva).show();
     </script>
+
 </body>
 
 </html>

@@ -1,3 +1,4 @@
+{% load static %}
 {% load django_bootstrap5 %}
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -6,8 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consulta de Contato</title>
     {% bootstrap_css %}
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
 </head>
-<body class="p-4">
+<body>
     <div class="container" style="max-width: 700px;">
         <h1 class="h3 border-bottom pb-2 mb-3">Consulta de Contato</h1>
         
@@ -18,8 +20,7 @@
             <p><strong>Telefone:</strong> {{ contato.Telefone|default:"Não informado" }}</p>
             <p><strong>Data de Nascimento:</strong> {{ contato.DtaNas|date:"d/m/Y"|default:"Não informada" }}</p>
             <hr>
-            <p><strong>Categoria (Relação N:1):</strong> <span class="badge bg-success">{{ contato.Categoria.Nome }}</span></p>
-            <p><strong>Empresa (Relação N:1):</strong> <span class="badge bg-info text-white">{{ contato.Empresa.Nome }}</span> ({{ contato.Empresa.Cidade.Nome }}/{{ contato.Empresa.Cidade.Estado }})</p>
+            <p><strong>Empresa (Relação N:1):</strong> <span class="badge bg-info text-white">{{ contato.Empresa.Nome }}</span></p>
         </div>
 
         <h4 class="h5 mb-2">Compromissos Agendados com este Contato (Relação 1:N)</h4>
@@ -34,6 +35,21 @@
             </li>
             {% empty %}
             <li class="list-group-item text-muted">Nenhum compromisso agendado para este contato.</li>
+            {% endfor %}
+        </ul>
+
+        <h4 class="h5 mb-2">Compromissos em que este Contato Participa (Relação N:N)</h4>
+        <ul class="list-group mb-4">
+            {% for comp in participando %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>{{ comp.Titulo }}</strong>
+                    <div class="small text-muted">{{ comp.Data|date:"d/m/Y" }} às {{ comp.Hora|time:"H:i" }} - Organizado por: {{ comp.Contato.Nome }}</div>
+                </div>
+                <a href="{% url 'consCompromisso' comp.id %}" class="btn btn-sm btn-outline-info">Ver</a>
+            </li>
+            {% empty %}
+            <li class="list-group-item text-muted">Este contato não participa de nenhum compromisso.</li>
             {% endfor %}
         </ul>
 

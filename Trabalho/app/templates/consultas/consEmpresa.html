@@ -1,3 +1,4 @@
+{% load static %}
 {% load django_bootstrap5 %}
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -6,15 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consulta de Empresa</title>
     {% bootstrap_css %}
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
 </head>
-<body class="p-4">
+<body>
     <div class="container" style="max-width: 700px;">
         <h1 class="h3 border-bottom pb-2 mb-3">Consulta de Empresa</h1>
         <div class="card p-3 mb-4">
             <p><strong>Id:</strong> {{ empresa.id }}</p>
             <p><strong>Nome:</strong> {{ empresa.Nome }}</p>
             <p><strong>CNPJ:</strong> {{ empresa.CNPJ|default:"Não informado" }}</p>
-            <p><strong>Cidade (Relação N:1):</strong> {{ empresa.Cidade.Nome }}/{{ empresa.Cidade.Estado }}</p>
         </div>
 
         <h4 class="h5 mb-2">Contatos Vinculados a esta Empresa (Relação 1:N)</h4>
