@@ -1,0 +1,37 @@
+{% load django_bootstrap5 %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo }}</title>
+    {% bootstrap_css %}
+</head>
+
+<body>
+
+    <div class="container mt-4" style="max-width: 700px;">
+
+        <h1 class="h3 border-bottom pb-2 mb-3">{{ titulo }}</h1>
+
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-info">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+
+        <form method="post" autocomplete="off" class="form">
+            {% csrf_token %}
+
+            {% bootstrap_form form %}
+
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a href="{% url 'index' %}" class="btn btn-secondary ms-2">Voltar</a>
+        </form>
+    </div>
+
+    {% bootstrap_javascript %}
+</body>
+
+</html>

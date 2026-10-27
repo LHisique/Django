@@ -1,0 +1,49 @@
+{% load django_bootstrap5 %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relacionamentos 1:N e N:1</title>
+    {% bootstrap_css %}
+</head>
+
+<body>
+
+    <h1>Relacionamentos 1:N e N:1</h1>
+
+    <p></p>
+    <table border="1">
+        <tr>
+            <td>Tabela</td>
+            <td>Relacionamento</td>
+        </tr>
+        <tr>
+            <td>Categoria</td>
+            <td>1:N com Contato</td>
+        </tr>
+        <tr>
+            <td>Cidade</td>
+            <td>1:N com Empresa</td>
+        </tr>
+        <tr>
+            <td>Empresa</td>
+            <td>N:1 com Cidade<br>1:N com Contato</td>
+        </tr>
+        <tr>
+            <td>Contato</td>
+            <td>N:1 com Categoria e Empresa<br>1:N com Compromisso</td>
+        </tr>
+        <tr>
+            <td>Compromisso</td>
+            <td>N:1 com Contato</td>
+        </tr>
+    </table>
+
+    <p></p>
+    <a href="{% url 'index' %}">Voltar</a>
+
+</body>
+
+</html>

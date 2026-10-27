@@ -1,0 +1,34 @@
+{% load django_bootstrap5 %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exclusão de {{ tipo }}</title>
+    {% bootstrap_css %}
+</head>
+
+<body>
+    <div class="container mt-4" style="max-width: 600px;">
+        <div class="alert alert-danger">
+            <h2>Confirma exclusão? Esse processo é irreversível.</h2>
+        </div>
+
+        <div class="card p-3 mb-3">
+            <p><strong>{{ tipo }}:</strong> {{ objeto }}</p>
+            {% if aviso %}
+            <p class="text-danger small"><strong>Atenção:</strong> {{ aviso }}</p>
+            {% endif %}
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
+            <a href="{% url 'index' %}" class="btn btn-secondary ms-2">Cancelar</a>
+        </form>
+    </div>
+    {% bootstrap_javascript %}
+</body>
+
+</html>

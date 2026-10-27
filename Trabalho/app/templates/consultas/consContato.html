@@ -1,0 +1,48 @@
+{% load django_bootstrap5 %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Contato</title>
+    {% bootstrap_css %}
+</head>
+<body class="p-4">
+    <div class="container" style="max-width: 700px;">
+        <h1 class="h3 border-bottom pb-2 mb-3">Consulta de Contato</h1>
+        
+        <div class="card p-3 mb-4">
+            <p><strong>Id:</strong> {{ contato.id }}</p>
+            <p><strong>Nome:</strong> {{ contato.Nome }}</p>
+            <p><strong>e-Mail:</strong> {{ contato.Email }}</p>
+            <p><strong>Telefone:</strong> {{ contato.Telefone|default:"Não informado" }}</p>
+            <p><strong>Data de Nascimento:</strong> {{ contato.DtaNas|date:"d/m/Y"|default:"Não informada" }}</p>
+            <hr>
+            <p><strong>Categoria (Relação N:1):</strong> <span class="badge bg-success">{{ contato.Categoria.Nome }}</span></p>
+            <p><strong>Empresa (Relação N:1):</strong> <span class="badge bg-info text-white">{{ contato.Empresa.Nome }}</span> ({{ contato.Empresa.Cidade.Nome }}/{{ contato.Empresa.Cidade.Estado }})</p>
+        </div>
+
+        <h4 class="h5 mb-2">Compromissos Agendados com este Contato (Relação 1:N)</h4>
+        <ul class="list-group mb-4">
+            {% for comp in compromissos %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>{{ comp.Titulo }}</strong>
+                    <div class="small text-muted">{{ comp.Data|date:"d/m/Y" }} às {{ comp.Hora|time:"H:i" }} - Local: {{ comp.Local|default:"A combinar" }}</div>
+                </div>
+                <a href="{% url 'consCompromisso' comp.id %}" class="btn btn-sm btn-outline-info">Ver</a>
+            </li>
+            {% empty %}
+            <li class="list-group-item text-muted">Nenhum compromisso agendado para este contato.</li>
+            {% endfor %}
+        </ul>
+
+        <div>
+            <a href="{% url 'altContato' contato.id %}" class="btn btn-warning">Alterar</a>
+            <a href="{% url 'excContato' contato.id %}" class="btn btn-danger">Excluir</a>
+            <a href="{% url 'index' %}" class="btn btn-secondary ms-2">Voltar</a>
+        </div>
+    </div>
+    {% bootstrap_javascript %}
+</body>
+</html>
